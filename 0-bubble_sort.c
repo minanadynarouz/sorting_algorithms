@@ -1,6 +1,20 @@
 #include "sort.h"
 
 /**
+ * swapint - to swap two adjacent ints
+ * @x: first int
+ * @y: second int
+ */
+
+void swapint(int *a, int *b)
+{
+	int temp;
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+/**
  * bubble_sort - implementing bubble sort algorithm.
  * @array: array to be sorted.
  * @size: size of the array.
@@ -19,9 +33,7 @@ void bubble_sort(int *array, size_t size)
 		{
 			if (array[i] > array[i + 1])
 			{
-				temp = array[i];
-				array[i] = array[i + 1];
-				array[i + 1] = temp;
+				swapint((array + i), (array + i + 1))
 				swapped = 1;
 			}
 		}
