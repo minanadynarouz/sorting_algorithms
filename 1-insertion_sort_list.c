@@ -1,55 +1,45 @@
 #include "sort.h"
 
 /**
- * swap_dll - swap previous node with current node if bigger.
- * @node_1: previous node.
- * @node_2: current node.
- * @temp: node hold the previous node for a successful swapping.
+ * swap_dll - Swap two nodes in a dll.
+ * @h: pointer to the head of the dll.
+ * @n1: pointer to the first node to swap.
+ * @n2: second node to swap.
  */
-
-void swap_dll(listint_t *node_1, listint_t *node_2, listint_t **temp)
+void swap_dll(listint_t **h, listint_t **n1, listint_t *n2)
 {
-	*temp = node_1->prev;
-	node_1->next = node_2->next;
-	node_1->prev = node_2;
-	node_2->next = node_1;
-	node_2->prev = *temp;
+	(*n1)->next = n2->next;
+	if (n2->next != NULL)
+		n2->next->prev = *n1;
+	n2->prev = (*n1)->prev;
+	n2->next = *n1;
+	if ((*n1)->prev != NULL)
+		(*n1)->prev->next = n2;
+	else
+		*h = n2;
+	(*n1)->prev = n2;
+	*n1 = n2->prev;
 }
 
 /**
- * insertion_sort_list - implement insertion sort algorithm
- * @list: Double linked list to be sorted
+ * insertion_sort_list - Sorts a dll of ints using the insertion sort.
+ * @list: pointer to the head of a doubly-linked list of integers.
  */
-
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *current, *previous, *temp;
+	listint_t *iterator, *insert, *tmp;
 
-	current = (*list)->next;
-
-	if (list == NULL || *list == NULL)
+	if (list == NULL || *list == NULL || (*list)->next == NULL)
 		return;
 
-	while (current != NULL)
+	for (iterator = (*list)->next; iterator != NULL; iterator = tmp)
 	{
-		previous = current->prev;
-		while (previous != NULL && previous->n > current->n)
+		tmp = iterator->next;
+		insert = iterator->prev;
+		while (insert != NULL && iterator->n < insert->n)
 		{
-			swap_dll(previous, current, &temp);
-
-			if (temp != NULL)
-				temp->next = current;
-
-			if (previous->next != NULL)
-				previous->next->prev = previous;
-
-			if (*list == previous)
-				*list = current;
-
-			previous = temp;
+			swap_dll(list, &insert, iterator);
+			print_list((const listint_t *)*list);
 		}
-		print_list(*list);
-
-		current = current->next;
 	}
 }
