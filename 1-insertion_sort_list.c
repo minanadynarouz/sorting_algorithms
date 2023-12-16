@@ -24,20 +24,12 @@ void swap_dll(listint_t *node_1, listint_t *node_2, listint_t **temp)
 void insertion_sort_list(listint_t **list)
 {
 	listint_t *current, *previous, *temp;
-	int i;
 
 	current = (*list)->next;
-
-	while (current != NULL)
-	{
-		current = current->next;
-		i++;
-	}
 
 	if (list == NULL || *list == NULL || i < 2)
 		return;
 
-	current = (*list)->next;
 	while (current != NULL)
 	{
 		previous = current->prev;
