@@ -31,9 +31,9 @@ void selection_sort(int *array, size_t size)
 		}
 		if (val_changed == 1)
 		{
-			print_array(array, size);
 			array[i] = min;
 			array[index_stopped] = moving_position;
+			print_array(array, size);
 		}
 		val_changed = 0;
 	}
