@@ -1,58 +1,68 @@
 #include "sort.h"
 
 /**
- * swapint - swap two ints.
- * @a: first ele to be swapped.
- * @b: second ele to be swapped.
+ * lomuto_partition - array partition
+ * @array: array to sort
+ * @first: first position
+ * @last: last position
+ * @size: array size
+ * Return: int pivot index
  */
-
-void swapint(int *a, int *b)
+int lomuto_partition(int *array, int first, int last, size_t size)
 {
-	int temp;
+	int i = first - 1, aux, j;
 
-	temp = *a;
-	*a = *b;
-	*b = temp;
-}
-
-/**
- * lomuto - implement Lomuto partitioning
- * @array: array to be paritioned.
- * @low: first index.
- * @high: last index.
- * Return: index of pivoted element.
- */
-
-int lomuto(int *array, size_t low, size_t high)
-{
-	int pivot = array[high];
-	size_t i = low - 1, j;
-	for (j = low; j <= high; j++)
+	for (j = first; j <= last - 1; j++)
 	{
-		if (array[j] < pivot)
+		if (array[j] < array[last])
 		{
 			i++;
-			swapint(&array[i], &array[j]);
+			if (i < j)
+			{
+				aux = array[i];
+				array[i] = array[j];
+				array[j] = aux;
+				print_array(array, size);
+			}
 		}
 	}
-	swapint(&array[i + 1], &array[high]);
+	if (array[i + 1] > array[last])
+	{
+		aux = array[i + 1];
+		array[i + 1] = array[last];
+		array[last] = aux;
+		print_array(array, size);
+	}
+
 	return (i + 1);
 }
 
 /**
- * quickSort - Implement quicksort algorithm
- * @array: array to be sorted.
- * @size: size of array.
-*/
-
-void quickSort(int *array, size_t size)
+ * qs - sorts an array of integers recursively
+ * @array: array to sort
+ * @first: first position
+ * @last: last position
+ * @size: array size
+ */
+void qs(int *array, int first, int last, size_t size)
 {
-	int low = 0, high = size - 1;
-	if (low < high)
-	{
-		int pivotIndex = lomuto(array, low, high);
+	int pivot;
 
-		quickSort(array, low, pivotIndex - 1);
-		quickSort(array, pivotIndex + 1, high);
+	if (first < last)
+	{
+		pivot = lomuto_partition(array, first, last, size);
+		qs(array, first, pivot - 1, size);
+		qs(array, pivot + 1, last, size);
 	}
+}
+
+/**
+ * quick_sort - sorts an array of integers using the Quick
+ * sort algorithm in ascending order
+ * @array: array to sort
+ * @size: array size
+ */
+void quick_sort(int *array, size_t size)
+{
+	qs(array, 0, size - 1, size);
 }
